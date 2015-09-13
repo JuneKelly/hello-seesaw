@@ -1,5 +1,6 @@
 (ns hello-seesaw.core
-  (:use [seesaw.core])
+  (:use [seesaw.core]
+        [markdown.core])
   (:import org.pushingpixels.substance.api.SubstanceLookAndFeel
            javax.swing.JEditorPane
            javax.swing.text.Document
@@ -8,19 +9,16 @@
            )
   (:gen-class))
 
-(def html-text "
+(def html-text
+  (md-to-html-string "
+# Welcome
 
-  <html>
+This is a cool thing.
 
-  <h1>Hello</h1>
-  <p>
-    <img src='http://i.imgur.com/wgmGKyQ.png' />
-  </p>
-  <p>
-    <a href='#'>Wat</a>
-  </p>
+![Doge](http://a3.mzstatic.com/us/r30/Purple6/v4/db/f5/c8/dbf5c8fe-593e-c35b-c3d1-02f70d703354/icon_128.png)
 
-  </html>")
+Don't you think?
+  "))
 
 (def editor (new JEditorPane))
 (. editor setEditable false)
@@ -29,8 +27,10 @@
 (. editor setEditorKit kit)
 
 (def stylesheet (. kit getStyleSheet))
-(. stylesheet addRule "body { font-family: monospace; font-size: 1.2em; padding: 24px; }")
-(. stylesheet addRule "img { display: block; margin-top: 12px; margin-bottom: 12px; }")
+(. stylesheet addRule
+   "body { font-family: monospace; font-size: 1.2em; padding: 24px; }")
+(. stylesheet addRule
+   "img { display: block; margin-top: 12px; margin-bottom: 12px; }")
 
 (def doc (. kit createDefaultDocument))
 (. editor setDocument doc)
