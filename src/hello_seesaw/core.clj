@@ -13,7 +13,12 @@
   <html>
 
   <h1>Hello</h1>
-  <img src='http://i.imgur.com/wgmGKyQ.png'>
+  <p>
+    <img src='http://i.imgur.com/wgmGKyQ.png' />
+  </p>
+  <p>
+    <a href='#'>Wat</a>
+  </p>
 
   </html>")
 
@@ -25,6 +30,7 @@
 
 (def stylesheet (. kit getStyleSheet))
 (. stylesheet addRule "body { font-family: monospace; font-size: 1.2em; padding: 24px; }")
+(. stylesheet addRule "img { display: block; margin-top: 12px; margin-bottom: 12px; }")
 
 (def doc (. kit createDefaultDocument))
 (. editor setDocument doc)
