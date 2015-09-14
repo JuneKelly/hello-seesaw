@@ -9,35 +9,35 @@
            )
   (:gen-class))
 
-(def html-text
-  (md-to-html-string "
-# Welcome
-
-This is a cool thing.
-
-![Doge](http://a3.mzstatic.com/us/r30/Purple6/v4/db/f5/c8/dbf5c8fe-593e-c35b-c3d1-02f70d703354/icon_128.png)
-
-Don't you think?
-  "))
-
-(def editor (new JEditorPane))
-(. editor setEditable false)
+(def page (new JEditorPane))
+(. page setEditable false)
 
 (def kit (new HTMLEditorKit))
-(. editor setEditorKit kit)
+(. page setEditorKit kit)
 
 (def stylesheet (. kit getStyleSheet))
 (. stylesheet addRule
-   "body { font-family: monospace; font-size: 1.2em; padding: 24px; }")
+   "body { font-family: sans-serif; padding: 24px; }")
 (. stylesheet addRule
    "img { display: block; margin-top: 12px; margin-bottom: 12px; }")
+(. stylesheet addRule
+   "pre { font-family: monospace; }")
 
 (def doc (. kit createDefaultDocument))
-(. editor setDocument doc)
-(. editor setText html-text)
+(. page setDocument doc)
+
+(def go-button (button :text "go"))
+(def url-bar (text))
+
+(defn update-page [url]
+  (. page setText (md-to-html-string
+                   (slurp url))))
+
+(listen go-button :action (fn [e] (update-page (text url-bar))))
+
+(update-page "https://raw.githubusercontent.com/ShaneKilkelly/manuel/master/README.md")
 
 (native!)
-
 
 (defn -main [& args]
   (invoke-later
@@ -47,11 +47,8 @@ Don't you think?
      :on-close :exit
      :width 800
      :height 600
-     :content (vertical-panel
-               :items [
-                       :separator
-                       editor
-                       :separator
-                       ]))
+     :content (border-panel
+               :north (horizontal-panel :items [go-button url-bar])
+               :center page))
     ;; pack!
     show!)))
