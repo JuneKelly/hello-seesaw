@@ -35,7 +35,7 @@
 
 (listen go-button :action (fn [e] (update-page (text url-bar))))
 
-(update-page "https://raw.githubusercontent.com/ShaneKilkelly/manuel/master/README.md")
+(update-page "https://raw.githubusercontent.com/ShaneKilkelly/hello-seesaw/master/README.md")
 
 (native!)
 
